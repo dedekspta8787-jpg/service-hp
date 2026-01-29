@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEDEK HP - CLOUD V16</title>
+    <title>DEDEK HP - CLOUD V17</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -23,17 +23,17 @@
         .tgl-selesai { background: #fde047; color: #000; padding: 3px 8px; border-radius: 5px; font-size: 0.75em; font-weight: bold; margin-top: 5px; display: inline-block; }
         
         #notaModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; padding-top: 20px; overflow-y: auto; }
-        .nota-kertas { background: white; color: black; padding: 25px; border-radius: 2px; max-width: 350px; margin: auto; text-align: center; font-family: 'Courier New', monospace; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .nota-kertas { background: white; color: black; padding: 25px; border-radius: 2px; max-width: 350px; margin: auto; text-align: center; font-family: 'Courier New', monospace; }
         .logo-area { border: 2px solid black; display: inline-block; padding: 5px 15px; font-weight: bold; font-size: 1.4em; margin-bottom: 5px; }
         .snk { font-size: 0.7em; text-align: justify; margin-top: 15px; border-top: 1px dashed black; padding-top: 10px; line-height: 1.2; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2 style="text-align:center; color:var(--primary);">DEDEK HP CLOUD V16</h2>
+<div class="container" id="admin-view">
+    <h2 style="text-align:center; color:var(--primary);">DEDEK HP - ADMIN PANEL</h2>
 
-    <div id="admin-form" class="card">
+    <div class="card">
         <h3>👤 DATA PELANGGAN</h3>
         <input type="text" id="cust_nama" placeholder="Nama Pelanggan">
         <input type="tel" id="cust_wa" placeholder="WA Pelanggan">
@@ -60,7 +60,7 @@
         <input type="text" id="input_pin" placeholder="Isi PIN/Sandi" style="display:none;">
         <div id="pola-area" style="display:none; text-align:center;">
             <canvas id="canvasPola" width="200" height="200"></canvas><br>
-            <button onclick="ctx.clearRect(0,0,200,200)" style="color:red; background:none; border:none; cursor:pointer;">Hapus Gambar</button>
+            <button onclick="ctx.clearRect(0,0,200,200)" style="color:red; background:none; border:none;">Hapus Gambar</button>
         </div>
 
         <h3>🛠️ KETERANGAN</h3>
@@ -76,18 +76,32 @@
     </div>
 </div>
 
-<div id="notaModal">
-    <div class="nota-kertas" id="printArea">
+<div class="container" id="customer-view" style="display:none; padding-top:20px;">
+    <div class="nota-kertas">
         <div class="logo-area">DEDEK HANDPHONE</div><br>
         <small>Terima Service HP & Jual Saldo</small><br>
+        <small>WA: 0831-1947-2528</small>
+        <hr style="border-top: 1px dashed black;">
+        <h2 id="cust-status" style="margin:10px 0; color:blue;">MENGECEK...</h2>
+        <div id="cust-detail" style="text-align:left; font-size:0.9em; line-height:1.6;"></div>
+        <hr style="border-top: 1px dashed black;">
+        <div style="font-weight:bold; font-size:0.8em; margin-bottom:10px;">HARAP BAWA STRUK SAAT MENGAMBIL HP</div>
+        <a id="wa-link" href="#" style="background:#25d366; color:white; padding:10px; display:block; text-decoration:none; border-radius:5px; font-weight:bold;">Tanya Bos DedeXx</a>
+        <div class="snk">
+            Barang servis yang tidak diambil selama 3 (tiga) bulan sejak tanggal selesai servis bukan tanggung jawab pihak konter.
+        </div>
+    </div>
+</div>
+
+<div id="notaModal">
+    <div class="nota-kertas">
+        <div class="logo-area">DEDEK HANDPHONE</div><br>
         <small>WA: 0831-1947-2528</small>
         <hr style="border-top: 1px dashed black;">
         <div id="isi_nota" style="text-align:left; font-size:0.85em;"></div>
         <div id="qrcode" style="display:flex; justify-content:center; margin:15px;"></div>
         <div style="font-weight:bold; font-size:0.8em;">HARAP BAWA STRUK SAAT MENGAMBIL HP</div>
-        <div class="snk">
-            Barang servis yang tidak diambil selama 3 (tiga) bulan sejak tanggal selesai servis bukan tanggung jawab pihak konter. Kehilangan atau kerusakan setelah melewati batas waktu tersebut menjadi tanggung jawab pelanggan.
-        </div>
+        <div class="snk">Barang servis yang tidak diambil selama 3 (tiga) bulan...</div>
         <button onclick="document.getElementById('notaModal').style.display='none'" style="width:100%; margin-top:20px; padding:10px; background:black; color:white; border:none;">TUTUP</button>
     </div>
 </div>
@@ -108,9 +122,7 @@
     canvas.onmousedown = (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
     canvas.onmousemove = (e) => { if(drawing) { const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.lineWidth=3; ctx.stroke(); } };
     window.onmouseup = () => drawing = false;
-    canvas.ontouchstart = (e) => { drawing = true; e.preventDefault(); ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-    canvas.ontouchmove = (e) => { if(drawing) { e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.lineWidth=3; ctx.stroke(); } };
-
+    
     function toggleKunci() {
         let t = document.getElementById('tipe_kunci').value;
         document.getElementById('input_pin').style.display = t === 'PIN/SANDI' ? 'block' : 'none';
@@ -118,37 +130,18 @@
     }
     function formatRp(input) { let v = input.value.replace(/\D/g,""); input.value = v ? "Rp " + parseInt(v).toLocaleString('id-ID') : ""; }
 
-    function updateStatus(id, newStatus) {
-        let updateData = { status: newStatus };
-        if (newStatus === 'SELESAI') {
-            const now = new Date();
-            updateData.waktuSelesai = now.toLocaleDateString('id-ID') + " " + now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
-        } else {
-            updateData.waktuSelesai = null;
-        }
-        db.ref('services/' + id).update(updateData);
-    }
-
     function simpanKeCloud() {
         let lengkap = ["SIM ("+document.getElementById('sim_qty').value+")"];
         document.querySelectorAll('.kelengkapan:checked').forEach(c => lengkap.push(c.value));
         const id = Date.now();
         const tgl = new Date().toLocaleDateString('id-ID').replace(/\//g, '-');
-        
         const data = {
-            id: id,
-            nama: document.getElementById('cust_nama').value.toUpperCase(),
-            wa: document.getElementById('cust_wa').value,
-            unit: document.getElementById('unit_merk').value + " " + document.getElementById('unit_type').value,
-            lengkap: lengkap.join(", "),
-            tipeKunci: document.getElementById('tipe_kunci').value,
-            pin: document.getElementById('input_pin').value,
-            pola: document.getElementById('tipe_kunci').value === 'POLA' ? canvas.toDataURL() : null,
-            rusak: document.getElementById('serv_rusak').value,
-            biaya: document.getElementById('serv_biaya').value,
-            status: 'ANTRIAN',
-            tgl: tgl,
-            waktuSelesai: null
+            id: id, nama: document.getElementById('cust_nama').value.toUpperCase(),
+            wa: document.getElementById('cust_wa').value, unit: document.getElementById('unit_merk').value + " " + document.getElementById('unit_type').value,
+            lengkap: lengkap.join(", "), tipeKunci: document.getElementById('tipe_kunci').value,
+            pin: document.getElementById('input_pin').value, pola: document.getElementById('tipe_kunci').value === 'POLA' ? canvas.toDataURL() : null,
+            rusak: document.getElementById('serv_rusak').value, biaya: document.getElementById('serv_biaya').value,
+            status: 'ANTRIAN', tgl: tgl, waktuSelesai: null
         };
         db.ref('services/' + id).set(data).then(() => { generateNota(data); });
     }
@@ -162,37 +155,27 @@
         snapshot.forEach((child) => {
             const s = child.val();
             if(s.tgl === hariIni) { tHP++; tDuit += parseInt(s.biaya.replace(/[^0-9]/g, "")) || 0; }
-            let kunciHTML = s.pola ? `<br><img src="${s.pola}" style="width:80px;background:white;">` : (s.pin ? `<br>PIN: ${s.pin}` : '');
             let infoSelesai = s.waktuSelesai ? `<div class="tgl-selesai">Selesai: ${s.waktuSelesai}</div>` : '';
-            
             listDiv.innerHTML += `
                 <div class="service-item st-${s.status.toLowerCase()}">
-                    <select onchange="updateStatus('${s.id}', this.value)" style="width:auto; float:right; color:black; font-weight:bold;">
+                    <select onchange="db.ref('services/${s.id}').update({status:this.value, waktuSelesai: this.value=='SELESAI' ? new Date().toLocaleString('id-ID') : null})" style="width:auto; float:right;">
                         <option value="ANTRIAN" ${s.status=='ANTRIAN'?'selected':''}>ANTRIAN</option>
                         <option value="PROSES" ${s.status=='PROSES'?'selected':''}>PROSES</option>
                         <option value="SELESAI" ${s.status=='SELESAI'?'selected':''}>SELESAI</option>
                     </select>
-                    <strong>${s.nama}</strong><br><small>${s.unit} (${s.tgl})</small>
+                    <strong>${s.nama}</strong><br><small>${s.unit}</small>
                     ${infoSelesai}
-                    <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; margin-top:5px; font-size:0.85em;">
-                        <b>Masalah:</b> ${s.rusak} ${kunciHTML}
-                    </div>
                     <button onclick='generateNota(${JSON.stringify(s)})' style="margin-top:10px;">LIHAT NOTA</button>
-                    <button onclick="if(confirm('Hapus?')) db.ref('services/${s.id}').remove()" style="background:red; color:white; border:none; float:right; padding:5px 10px; border-radius:5px;">Hapus</button>
+                    <button onclick="if(confirm('Hapus?')) db.ref('services/${s.id}').remove()" style="background:red; color:white; float:right; border:none;">Hapus</button>
                 </div>`;
         });
-        rekapDiv.innerHTML = `<b>REKAP HARI INI</b><br>📱 ${tHP} Unit | 💰 Rp ${tDuit.toLocaleString('id-ID')}`;
+        rekapDiv.innerHTML = `📱 ${tHP} Unit | 💰 Rp ${tDuit.toLocaleString('id-ID')}`;
     });
 
     function generateNota(data) {
-        document.getElementById('isi_nota').innerHTML = `
-            TGL MASUK : ${data.tgl}<br>
-            NAMA      : ${data.nama}<br>
-            UNIT      : ${data.unit}<br>
-            BIAYA     : ${data.biaya}<br>
-            RUSAK     : ${data.rusak}`;
+        document.getElementById('isi_nota').innerHTML = `TGL: ${data.tgl}<br>NAMA: ${data.nama}<br>UNIT: ${data.unit}<br>RUSAK: ${data.rusak}<br>BIAYA: ${data.biaya}`;
         document.getElementById('qrcode').innerHTML = "";
-        let linkCek = window.location.href.split('?')[0] + "?cek=" + data.id;
+        let linkCek = window.location.origin + window.location.pathname + "?cek=" + data.id;
         new QRCode(document.getElementById("qrcode"), { text: linkCek, width: 140, height: 140 });
         document.getElementById('notaModal').style.display = 'block';
     }
@@ -200,22 +183,16 @@
     const urlParams = new URLSearchParams(window.location.search);
     const trackId = urlParams.get('cek');
     if (trackId) {
-        document.getElementById('admin-form').style.display = 'none';
+        document.getElementById('admin-view').style.display = 'none';
+        document.getElementById('customer-view').style.display = 'block';
         db.ref('services/' + trackId).on('value', (snapshot) => {
             const s = snapshot.val();
             if (s) {
-                let infoSelesaiCust = s.waktuSelesai ? `<p style="color:yellow; font-weight:bold;">Selesai pada: ${s.waktuSelesai}</p>` : '';
-                document.getElementById('list_service').innerHTML = `
-                    <div class="service-item st-${s.status.toLowerCase()}" style="text-align:center;">
-                        <div class="logo-area">DEDEK HANDPHONE</div>
-                        <h1>STATUS: ${s.status}</h1>
-                        ${infoSelesaiCust}
-                        <hr>
-                        <div style="text-align:left; padding:10px;">
-                            <b>Unit:</b> ${s.unit}<br><b>Rusak:</b> ${s.rusak}
-                        </div>
-                        <a href="https://wa.me/6283119472528" style="background:#25d366; color:white; padding:15px; display:inline-block; border-radius:10px; text-decoration:none; margin-top:20px; font-weight:bold;">Tanya Bos DedeXx</a>
-                    </div>`;
+                document.getElementById('cust-status').innerText = s.status;
+                document.getElementById('cust-detail').innerHTML = `
+                    <b>Nama:</b> ${s.nama}<br><b>Unit:</b> ${s.unit}<br><b>Kerusakan:</b> ${s.rusak}<br>
+                    <b>Status:</b> ${s.status}<br>${s.waktuSelesai ? '<b>Selesai pada:</b> '+s.waktuSelesai : ''}`;
+                document.getElementById('wa-link').href = "https://wa.me/6283119472528?text=Halo Bos DedeXx, saya mau tanya unit " + s.unit;
             }
         });
     }
