@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEDEK HP - SMART CLOUD V11</title>
+    <title>DEDEK HP - CLOUD V16</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -12,93 +12,87 @@
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; }
         .container { max-width: 650px; margin: auto; }
         .card { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--primary); margin-bottom: 15px; }
-        
-        /* Warna Background Status Sesuai Ralat Bos */
-        .st-antrian { background: #475569 !important; }
-        .st-proses { background: #ca8a04 !important; }
-        .st-selesai { background: #15803d !important; }
-        .st-batal { background: #b91c1c !important; }
-
+        .st-antrian { background: #475569 !important; } .st-proses { background: #ca8a04 !important; } .st-selesai { background: #15803d !important; }
         input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid var(--primary); background: #020617; color: white; box-sizing: border-box; }
         .grid-check { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; background: #020617; padding: 10px; border-radius: 8px; }
         .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.85em; }
-        .check-item input[type="checkbox"] { width: auto; }
+        #canvasPola { background: white; border-radius: 10px; touch-action: none; margin-top: 10px; cursor: crosshair; }
+        .btn-blue { background: var(--primary); color: #0f172a; width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .service-item { padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); position: relative; }
+        .rekap-box { background: #020617; padding: 15px; border-radius: 10px; border: 1px solid gold; margin-top: 10px; text-align: center; }
+        .tgl-selesai { background: #fde047; color: #000; padding: 3px 8px; border-radius: 5px; font-size: 0.75em; font-weight: bold; margin-top: 5px; display: inline-block; }
         
-        #canvasPola { background: white; border-radius: 10px; touch-action: none; margin-top: 10px; }
-        .btn-blue { background: var(--primary); color: #0f172a; width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 20px; }
-        
-        .service-item { padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); color: white; }
-        .detail-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 0.9em; }
-        .pola-preview { width: 100px; background: white; border-radius: 5px; margin-top: 5px; }
-
-        #notaModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; padding-top: 20px; }
-        .nota-kertas { background: white; color: black; padding: 20px; border-radius: 5px; max-width: 320px; margin: auto; font-family: 'Courier New', monospace; text-align: center; }
+        #notaModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; padding-top: 20px; overflow-y: auto; }
+        .nota-kertas { background: white; color: black; padding: 25px; border-radius: 2px; max-width: 350px; margin: auto; text-align: center; font-family: 'Courier New', monospace; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .logo-area { border: 2px solid black; display: inline-block; padding: 5px 15px; font-weight: bold; font-size: 1.4em; margin-bottom: 5px; }
+        .snk { font-size: 0.7em; text-align: justify; margin-top: 15px; border-top: 1px dashed black; padding-top: 10px; line-height: 1.2; }
     </style>
 </head>
 <body>
 
-<div class="container" id="main-view">
-    <h2 style="text-align:center; color:var(--primary);">DEDEK HP CLOUD V11</h2>
+<div class="container">
+    <h2 style="text-align:center; color:var(--primary);">DEDEK HP CLOUD V16</h2>
 
     <div id="admin-form" class="card">
-        <h3> DATA PELANGGAN & UNIT</h3>
+        <h3>👤 DATA PELANGGAN</h3>
         <input type="text" id="cust_nama" placeholder="Nama Pelanggan">
+        <input type="tel" id="cust_wa" placeholder="WA Pelanggan">
         <div style="display: flex; gap: 10px;">
             <input type="text" id="unit_merk" placeholder="Merk HP">
             <input type="text" id="unit_type" placeholder="Type HP">
         </div>
 
-        <h3> KELENGKAPAN</h3>
+        <h3>🔌 KELENGKAPAN</h3>
         <div class="grid-check">
-            <div class="check-item" style="grid-column: span 2;">
-                <span>SIM CARD:</span>
-                <select id="sim_qty" style="width: 80px; padding: 5px;">
-                    <option value="0">0</option><option value="1">1</option><option value="2">2</option>
-                </select>
-            </div>
+            <div class="check-item" style="grid-column: span 2;"><span>SIM:</span><select id="sim_qty" style="width: 60px;"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></div>
             <div class="check-item"><input type="checkbox" class="kelengkapan" value="Baterai"> Baterai</div>
             <div class="check-item"><input type="checkbox" class="kelengkapan" value="Memori"> Memori</div>
             <div class="check-item"><input type="checkbox" class="kelengkapan" value="Casing"> Casing</div>
             <div class="check-item"><input type="checkbox" class="kelengkapan" value="Sim Tray"> Sim Tray</div>
         </div>
 
-        <h3> KEAMANAN</h3>
+        <h3>🔐 KEAMANAN</h3>
         <select id="tipe_kunci" onchange="toggleKunci()">
-            <option value="TIDAK ADA">TIDAK ADA</option>
+            <option value="TIDAK ADA">TIDAK ADA KUNCI</option>
             <option value="PIN/SANDI">PIN / SANDI</option>
             <option value="POLA">POLA (GAMBAR)</option>
         </select>
-        <input type="text" id="input_pin" placeholder="Isi PIN/Sandi" style="display:none; margin-top:10px;">
+        <input type="text" id="input_pin" placeholder="Isi PIN/Sandi" style="display:none;">
         <div id="pola-area" style="display:none; text-align:center;">
             <canvas id="canvasPola" width="200" height="200"></canvas><br>
             <button onclick="ctx.clearRect(0,0,200,200)" style="color:red; background:none; border:none; cursor:pointer;">Hapus Gambar</button>
         </div>
 
-        <h3> KETERANGAN</h3>
-        <textarea id="serv_rusak" rows="2" placeholder="Masalah Kerusakan"></textarea>
-        <input type="tel" id="serv_biaya" placeholder="Biaya (Rp)" onkeyup="formatRp(this)">
-        <button class="btn-blue" onclick="simpanKeCloud()">SIMPAN & CETAK BARCODE</button>
+        <h3>🛠️ KETERANGAN</h3>
+        <textarea id="serv_rusak" rows="2" placeholder="Masalah HP"></textarea>
+        <input type="tel" id="serv_biaya" placeholder="Estimasi Biaya (Rp)" onkeyup="formatRp(this)">
+        <button class="btn-blue" onclick="simpanKeCloud()">SIMPAN & CETAK NOTA</button>
     </div>
 
     <div class="card">
-        <h3> MONITORING STATUS</h3>
+        <h3>📋 MONITORING & REKAP</h3>
+        <div id="rekap_hari_ini" class="rekap-box">Memuat rekap...</div>
         <div id="list_service"></div>
     </div>
 </div>
 
 <div id="notaModal">
-    <div class="nota-kertas">
-        <strong>DEDEK HANDPHONE</strong><br><small>Tracking Service Real-time</small>
+    <div class="nota-kertas" id="printArea">
+        <div class="logo-area">DEDEK HANDPHONE</div><br>
+        <small>Terima Service HP & Jual Saldo</small><br>
+        <small>WA: 0831-1947-2528</small>
         <hr style="border-top: 1px dashed black;">
-        <div id="isi_nota" style="text-align:left; font-size:0.8em;"></div>
-        <div id="qrcode" style="display:flex; justify-content:center; margin:10px;"></div>
-        <small>Scan untuk cek status HP Anda</small><br>
-        <button onclick="document.getElementById('notaModal').style.display='none'" style="width:100%; margin-top:15px; background:black; color:white; border:none; padding:10px;">TUTUP</button>
+        <div id="isi_nota" style="text-align:left; font-size:0.85em;"></div>
+        <div id="qrcode" style="display:flex; justify-content:center; margin:15px;"></div>
+        <div style="font-weight:bold; font-size:0.8em;">HARAP BAWA STRUK SAAT MENGAMBIL HP</div>
+        <div class="snk">
+            Barang servis yang tidak diambil selama 3 (tiga) bulan sejak tanggal selesai servis bukan tanggung jawab pihak konter. Kehilangan atau kerusakan setelah melewati batas waktu tersebut menjadi tanggung jawab pelanggan.
+        </div>
+        <button onclick="document.getElementById('notaModal').style.display='none'" style="width:100%; margin-top:20px; padding:10px; background:black; color:white; border:none;">TUTUP</button>
     </div>
 </div>
 
 <script>
-    // --- FIREBASE CONFIG ---
     const firebaseConfig = {
         apiKey: "AIzaSyAfddCMnsvXOfcYuUqQFJX9ksqsFP5T9FU",
         databaseURL: "https://dedekhandphone-9ffae-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -107,16 +101,15 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // --- CANVAS POLA ---
     const canvas = document.getElementById('canvasPola');
     const ctx = canvas.getContext('2d');
     let drawing = false;
     function getPos(e) { const rect = canvas.getBoundingClientRect(); const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY; return { x: cx - rect.left, y: cy - rect.top }; }
-    canvas.addEventListener('mousedown', (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); });
-    canvas.addEventListener('mousemove', (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.lineWidth=4; ctx.stroke(); });
-    window.addEventListener('mouseup', () => drawing = false);
-    canvas.addEventListener('touchstart', (e) => { drawing = true; e.preventDefault(); ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); });
-    canvas.addEventListener('touchmove', (e) => { if(!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.lineWidth=4; ctx.stroke(); });
+    canvas.onmousedown = (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
+    canvas.onmousemove = (e) => { if(drawing) { const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.lineWidth=3; ctx.stroke(); } };
+    window.onmouseup = () => drawing = false;
+    canvas.ontouchstart = (e) => { drawing = true; e.preventDefault(); ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
+    canvas.ontouchmove = (e) => { if(drawing) { e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.lineWidth=3; ctx.stroke(); } };
 
     function toggleKunci() {
         let t = document.getElementById('tipe_kunci').value;
@@ -125,15 +118,27 @@
     }
     function formatRp(input) { let v = input.value.replace(/\D/g,""); input.value = v ? "Rp " + parseInt(v).toLocaleString('id-ID') : ""; }
 
-    // --- LOGIKA SIMPAN ---
+    function updateStatus(id, newStatus) {
+        let updateData = { status: newStatus };
+        if (newStatus === 'SELESAI') {
+            const now = new Date();
+            updateData.waktuSelesai = now.toLocaleDateString('id-ID') + " " + now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+        } else {
+            updateData.waktuSelesai = null;
+        }
+        db.ref('services/' + id).update(updateData);
+    }
+
     function simpanKeCloud() {
-        let lengkap = ["SIM Card ("+document.getElementById('sim_qty').value+")"];
+        let lengkap = ["SIM ("+document.getElementById('sim_qty').value+")"];
         document.querySelectorAll('.kelengkapan:checked').forEach(c => lengkap.push(c.value));
-        
         const id = Date.now();
+        const tgl = new Date().toLocaleDateString('id-ID').replace(/\//g, '-');
+        
         const data = {
             id: id,
             nama: document.getElementById('cust_nama').value.toUpperCase(),
+            wa: document.getElementById('cust_wa').value,
             unit: document.getElementById('unit_merk').value + " " + document.getElementById('unit_type').value,
             lengkap: lengkap.join(", "),
             tipeKunci: document.getElementById('tipe_kunci').value,
@@ -142,64 +147,77 @@
             rusak: document.getElementById('serv_rusak').value,
             biaya: document.getElementById('serv_biaya').value,
             status: 'ANTRIAN',
-            tgl: new Date().toLocaleString('id-ID')
+            tgl: tgl,
+            waktuSelesai: null
         };
-        
-        db.ref('services/' + id).set(data).then(() => {
-            generateNota(data);
-            location.reload();
-        });
+        db.ref('services/' + id).set(data).then(() => { generateNota(data); });
     }
 
-    // --- CEK PELANGGAN ATAU ADMIN ---
+    db.ref('services').on('value', (snapshot) => {
+        const listDiv = document.getElementById('list_service');
+        const rekapDiv = document.getElementById('rekap_hari_ini');
+        listDiv.innerHTML = ""; let tHP = 0; let tDuit = 0;
+        const hariIni = new Date().toLocaleDateString('id-ID').replace(/\//g, '-');
+
+        snapshot.forEach((child) => {
+            const s = child.val();
+            if(s.tgl === hariIni) { tHP++; tDuit += parseInt(s.biaya.replace(/[^0-9]/g, "")) || 0; }
+            let kunciHTML = s.pola ? `<br><img src="${s.pola}" style="width:80px;background:white;">` : (s.pin ? `<br>PIN: ${s.pin}` : '');
+            let infoSelesai = s.waktuSelesai ? `<div class="tgl-selesai">Selesai: ${s.waktuSelesai}</div>` : '';
+            
+            listDiv.innerHTML += `
+                <div class="service-item st-${s.status.toLowerCase()}">
+                    <select onchange="updateStatus('${s.id}', this.value)" style="width:auto; float:right; color:black; font-weight:bold;">
+                        <option value="ANTRIAN" ${s.status=='ANTRIAN'?'selected':''}>ANTRIAN</option>
+                        <option value="PROSES" ${s.status=='PROSES'?'selected':''}>PROSES</option>
+                        <option value="SELESAI" ${s.status=='SELESAI'?'selected':''}>SELESAI</option>
+                    </select>
+                    <strong>${s.nama}</strong><br><small>${s.unit} (${s.tgl})</small>
+                    ${infoSelesai}
+                    <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; margin-top:5px; font-size:0.85em;">
+                        <b>Masalah:</b> ${s.rusak} ${kunciHTML}
+                    </div>
+                    <button onclick='generateNota(${JSON.stringify(s)})' style="margin-top:10px;">LIHAT NOTA</button>
+                    <button onclick="if(confirm('Hapus?')) db.ref('services/${s.id}').remove()" style="background:red; color:white; border:none; float:right; padding:5px 10px; border-radius:5px;">Hapus</button>
+                </div>`;
+        });
+        rekapDiv.innerHTML = `<b>REKAP HARI INI</b><br>📱 ${tHP} Unit | 💰 Rp ${tDuit.toLocaleString('id-ID')}`;
+    });
+
+    function generateNota(data) {
+        document.getElementById('isi_nota').innerHTML = `
+            TGL MASUK : ${data.tgl}<br>
+            NAMA      : ${data.nama}<br>
+            UNIT      : ${data.unit}<br>
+            BIAYA     : ${data.biaya}<br>
+            RUSAK     : ${data.rusak}`;
+        document.getElementById('qrcode').innerHTML = "";
+        let linkCek = window.location.href.split('?')[0] + "?cek=" + data.id;
+        new QRCode(document.getElementById("qrcode"), { text: linkCek, width: 140, height: 140 });
+        document.getElementById('notaModal').style.display = 'block';
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const trackId = urlParams.get('cek');
-
     if (trackId) {
         document.getElementById('admin-form').style.display = 'none';
         db.ref('services/' + trackId).on('value', (snapshot) => {
             const s = snapshot.val();
             if (s) {
+                let infoSelesaiCust = s.waktuSelesai ? `<p style="color:yellow; font-weight:bold;">Selesai pada: ${s.waktuSelesai}</p>` : '';
                 document.getElementById('list_service').innerHTML = `
                     <div class="service-item st-${s.status.toLowerCase()}" style="text-align:center;">
-                        <h1>${s.status}</h1>
-                        <div class="detail-box" style="text-align:left;">
-                            <b>Unit:</b> ${s.unit}<br><b>Nama:</b> ${s.nama}<br>
-                            <b>Rusak:</b> ${s.rusak}
+                        <div class="logo-area">DEDEK HANDPHONE</div>
+                        <h1>STATUS: ${s.status}</h1>
+                        ${infoSelesaiCust}
+                        <hr>
+                        <div style="text-align:left; padding:10px;">
+                            <b>Unit:</b> ${s.unit}<br><b>Rusak:</b> ${s.rusak}
                         </div>
+                        <a href="https://wa.me/6283119472528" style="background:#25d366; color:white; padding:15px; display:inline-block; border-radius:10px; text-decoration:none; margin-top:20px; font-weight:bold;">Tanya Bos DedeXx</a>
                     </div>`;
             }
         });
-    } else {
-        db.ref('services').on('value', (snapshot) => {
-            const listDiv = document.getElementById('list_service');
-            listDiv.innerHTML = "";
-            snapshot.forEach((child) => {
-                const s = child.val();
-                let kunciHTML = s.pola ? `<br><img src="${s.pola}" class="pola-preview">` : (s.pin ? `<br><b>PIN:</b> ${s.pin}` : '');
-                listDiv.innerHTML += `
-                    <div class="service-item st-${s.status.toLowerCase()}">
-                        <select onchange="db.ref('services/${s.id}/status').set(this.value)" style="width:auto; float:right; color:black;">
-                            <option value="ANTRIAN" ${s.status=='ANTRIAN'?'selected':''}>ANTRIAN</option>
-                            <option value="PROSES" ${s.status=='PROSES'?'selected':''}>PROSES</option>
-                            <option value="SELESAI" ${s.status=='SELESAI'?'selected':''}>SELESAI</option>
-                        </select>
-                        <strong>${s.nama}</strong> | ${s.unit}<br>
-                        <small>Lengkap: ${s.lengkap}</small>
-                        <div class="detail-box"><b>MASALAH:</b> ${s.rusak} ${kunciHTML}</div>
-                        <button onclick='generateNota(${JSON.stringify(s)})'>QR NOTA</button>
-                        <button onclick="db.ref('services/${s.id}').remove()" style="background:red; color:white; border:none; margin-left:10px;">HAPUS</button>
-                    </div>`;
-            });
-        });
-    }
-
-    function generateNota(data) {
-        document.getElementById('isi_nota').innerHTML = `NAMA: ${data.nama}<br>UNIT: ${data.unit}<br>BIAYA: ${data.biaya}`;
-        document.getElementById('qrcode').innerHTML = "";
-        let linkCek = window.location.href.split('?')[0] + "?cek=" + data.id;
-        new QRCode(document.getElementById("qrcode"), { text: linkCek, width: 150, height: 150 });
-        document.getElementById('notaModal').style.display = 'block';
     }
 </script>
 </body>
