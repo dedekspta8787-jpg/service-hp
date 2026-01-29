@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEDEK HP - CLOUD V20</title>
+    <title>DEDEK HP - CLOUD V21</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -12,16 +12,17 @@
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; }
         .container { max-width: 650px; margin: auto; }
         .card { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--primary); margin-bottom: 15px; }
-        .st-antrian { background: #475569 !important; } .st-proses { background: #ca8a04 !important; } .st-selesai { background: #15803d !important; }
         input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid var(--primary); background: #020617; color: white; box-sizing: border-box; }
-        .btn-blue { background: var(--primary); color: #0f172a; width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .service-item { padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-blue { background: var(--primary); color: #0f172a; width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; }
+        .st-antrian { background: #475569 !important; } .st-proses { background: #ca8a04 !important; } .st-selesai { background: #15803d !important; }
+        .service-item { padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.2); }
         
-        /* Gaya Nota Struk */
-        #notaModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; padding-top: 20px; overflow-y: auto; }
-        .nota-kertas { background: white; color: black; padding: 25px; border-radius: 2px; max-width: 350px; margin: auto; text-align: center; font-family: 'Courier New', monospace; }
-        .logo-struk { width: 150px; height: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; }
-        .snk { font-size: 0.7em; text-align: justify; margin-top: 15px; border-top: 1px dashed black; padding-top: 10px; line-height: 1.2; }
+        /* CSS NOTA LENGKAP */
+        #notaModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; padding: 20px; overflow-y: auto; box-sizing: border-box; }
+        .nota-kertas { background: white; color: black; padding: 20px; border-radius: 2px; max-width: 380px; margin: auto; text-align: center; font-family: 'Courier New', monospace; font-size: 14px; }
+        .logo-struk { width: 180px; height: auto; margin-bottom: 10px; }
+        .text-left { text-align: left; margin-top: 15px; line-height: 1.5; border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 10px 0; }
+        .snk { font-size: 10px; text-align: justify; margin-top: 15px; line-height: 1.2; }
     </style>
 </head>
 <body>
@@ -29,13 +30,11 @@
 <div class="container" id="admin-view">
     <h2 style="text-align:center; color:var(--primary);">DEDEK HANDPHONE - ADMIN</h2>
     <div class="card">
-        <h3>👤 DATA PELANGGAN</h3>
-        <input type="text" id="cust_nama" placeholder="Nama Pelanggan">
-        <input type="tel" id="cust_wa" placeholder="WA Pelanggan">
-        <input type="text" id="unit_hp" placeholder="Merk & Type HP">
-        <h3>🛠️ KETERANGAN</h3>
-        <textarea id="serv_rusak" rows="2" placeholder="Masalah HP"></textarea>
-        <input type="tel" id="serv_biaya" placeholder="Estimasi Biaya (Rp)">
+        <input type="text" id="cust_nama" placeholder="NAMA PELANGGAN">
+        <input type="tel" id="cust_wa" placeholder="NOMOR WA">
+        <input type="text" id="unit_hp" placeholder="MERK & TYPE HP">
+        <textarea id="serv_rusak" rows="2" placeholder="KETERANGAN KERUSAKAN"></textarea>
+        <input type="text" id="serv_biaya" placeholder="ESTIMASI BIAYA (Rp)">
         <button class="btn-blue" onclick="simpanKeCloud()">SIMPAN & CETAK NOTA</button>
     </div>
     <div id="list_service"></div>
@@ -44,27 +43,25 @@
 <div class="container" id="customer-view" style="display:none;">
     <div class="nota-kertas">
         <img src="logo.png" class="logo-struk" onerror="this.src='https://via.placeholder.com/150x150?text=DEDEK+HP'">
-        <small>WA: 0831-1947-2528</small>
-        <hr>
-        <h2 id="cust-status">...</h2>
-        <div id="cust-detail" style="text-align:left;"></div>
-        <hr>
+        <div id="cust-detail" class="text-left"></div>
+        <div style="margin: 20px 0;">
+            <h3 id="cust-status" style="color: blue; text-decoration: underline;">STATUS</h3>
+        </div>
         <a id="wa-link" href="#" style="background:#25d366; color:white; padding:15px; display:block; text-decoration:none; border-radius:8px; font-weight:bold;">TANYA DEDEK HANDPHONE</a>
-        <div class="snk">Barang servis tidak diambil 3 bulan bukan tanggung jawab konter. Bawa struk saat mengambil HP.</div>
+        <div class="snk">HARAP BAWA STRUK INI SAAT PENGAMBILAN UNIT.</div>
     </div>
 </div>
 
 <div id="notaModal">
     <div class="nota-kertas">
         <img src="logo.png" class="logo-struk" onerror="this.src='https://via.placeholder.com/150x150?text=DEDEK+HP'">
-        <div id="isi_nota" style="text-align:left;"></div>
+        <div id="isi_nota" class="text-left"></div>
         <div id="qrcode" style="display:flex; justify-content:center; margin:15px;"></div>
-        <button onclick="document.getElementById('notaModal').style.display='none'">TUTUP</button>
+        <button onclick="document.getElementById('notaModal').style.display='none'" style="width:100%; padding:10px; cursor:pointer;">TUTUP</button>
     </div>
 </div>
 
 <script>
-    // MASUKKAN CONFIG FIREBASE BOS DI SINI
     const firebaseConfig = {
         apiKey: "AIzaSyAfddCMnsvXOfcYuUqQFJX9ksqsFP5T9FU",
         databaseURL: "https://dedekhandphone-9ffae-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -76,10 +73,14 @@
     function simpanKeCloud() {
         const id = Date.now();
         const data = {
-            id: id, nama: document.getElementById('cust_nama').value.toUpperCase(),
-            unit: document.getElementById('unit_hp').value, rusak: document.getElementById('serv_rusak').value,
-            biaya: document.getElementById('serv_biaya').value, status: 'ANTRIAN',
-            tgl: new Date().toLocaleDateString('id-ID')
+            id: id, 
+            nama: document.getElementById('cust_nama').value.toUpperCase(),
+            wa: document.getElementById('cust_wa').value,
+            unit: document.getElementById('unit_hp').value.toUpperCase(),
+            rusak: document.getElementById('serv_rusak').value,
+            biaya: document.getElementById('serv_biaya').value,
+            status: 'ANTRIAN',
+            tgl: new Date().toLocaleString('id-ID')
         };
         db.ref('services/' + id).set(data).then(() => generateNota(data));
     }
@@ -89,17 +90,37 @@
         listDiv.innerHTML = "";
         snapshot.forEach((child) => {
             const s = child.val();
-            listDiv.innerHTML += `<div class="card st-${s.status.toLowerCase()}">
-                <strong>${s.nama}</strong> - ${s.unit} (${s.status})
-                <button onclick='generateNota(${JSON.stringify(s)})'>NOTA</button>
+            listDiv.innerHTML += `
+            <div class="service-item st-${s.status.toLowerCase()}">
+                <b>${s.nama}</b> - ${s.unit}<br>
+                <small>${s.tgl}</small><br>
+                <button onclick='generateNota(${JSON.stringify(s)})' style="margin-top:5px;">LIHAT NOTA</button>
+                <select onchange="db.ref('services/${s.id}').update({status:this.value})" style="width:auto; float:right;">
+                    <option value="ANTRIAN" ${s.status=='ANTRIAN'?'selected':''}>ANTRIAN</option>
+                    <option value="PROSES" ${s.status=='PROSES'?'selected':''}>PROSES</option>
+                    <option value="SELESAI" ${s.status=='SELESAI'?'selected':''}>SELESAI</option>
+                </select>
             </div>`;
         });
     });
 
     function generateNota(data) {
-        document.getElementById('isi_nota').innerHTML = `NAMA: ${data.nama}<br>UNIT: ${data.unit}<br>BIAYA: ${data.biaya}`;
+        // TAMPILKAN SEMUA DATA DI STRUK
+        document.getElementById('isi_nota').innerHTML = `
+            TGL MASUK: ${data.tgl}<br>
+            PELANGGAN: ${data.nama}<br>
+            UNIT HP  : ${data.unit}<br>
+            KERUSAKAN: ${data.rusak}<br>
+            EST.BIAYA: ${data.biaya}<br>
+            STATUS   : ${data.status}
+        `;
         document.getElementById('qrcode').innerHTML = "";
-        new QRCode(document.getElementById("qrcode"), { text: window.location.href + "?cek=" + data.id, width: 120, height: 120 });
+        // LINK BARCODE SEKARANG MENGARAH KE HALALAM LENGKAP
+        new QRCode(document.getElementById("qrcode"), { 
+            text: window.location.origin + window.location.pathname + "?cek=" + data.id, 
+            width: 150, 
+            height: 150 
+        });
         document.getElementById('notaModal').style.display = 'block';
     }
 
@@ -111,9 +132,15 @@
         db.ref('services/' + trackId).on('value', (snapshot) => {
             const s = snapshot.val();
             if(s) {
-                document.getElementById('cust-status').innerText = s.status;
-                document.getElementById('cust-detail').innerHTML = `Unit: ${s.unit}<br>Nama: ${s.nama}`;
-                document.getElementById('wa-link').href = "https://wa.me/6283119472528?text=HALO DEDEK HANDPHONE, tanya unit " + s.unit;
+                document.getElementById('cust-status').innerText = "STATUS: " + s.status;
+                document.getElementById('cust-detail').innerHTML = `
+                    <b>TANGGAL :</b> ${s.tgl}<br>
+                    <b>UNIT HP :</b> ${s.unit}<br>
+                    <b>PEMILIK :</b> ${s.nama}<br>
+                    <b>MASALAH :</b> ${s.rusak}<br>
+                    <b>BIAYA   :</b> ${s.biaya}
+                `;
+                document.getElementById('wa-link').href = "https://wa.me/6283119472528?text=HALO DEDEK HANDPHONE, tanya unit " + s.unit + " an " + s.nama;
             }
         });
     }
